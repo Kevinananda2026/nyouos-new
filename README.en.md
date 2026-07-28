@@ -1,6 +1,6 @@
 # NyouOS
 
-[简体中文](x)
+[简体中文](https://gitee.com/black-kevin/nyouos/blob/master/README.md) | English
 
 Self-developed web desktop system built with HTML, CSS and JavaScript, maintained as private closed-source project.
 
