@@ -1,0 +1,11 @@
+# 私密密钥
+private-key.js
+secret.json
+api-secret.txt
+# 打包产物、日志
+*.zip
+*.log
+build/
+dist/
+# 系统缓存
+.DS_Store

@@ -1,0 +1,256 @@
+.nyouos-tray {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    padding: 2px 8px;
+    height: 32px;
+}
+
+.nyouos-tray-btn {
+    width: 32px;
+    height: 28px;
+    border: none;
+    background: transparent;
+    color: #333;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.1s ease;
+    position: relative;
+    font-size: 11px;
+}
+
+.nyouos-tray-btn:hover {
+    background: rgba(0, 0, 0, 0.05);
+}
+
+.nyouos-tray-badge {
+    position: absolute;
+    top: 2px;
+    right: 4px;
+    width: 8px;
+    height: 8px;
+    background: #0078d4;
+    border-radius: 50%;
+    border: 1px solid #fff;
+}
+
+.nyouos-tray-clock {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2px 8px;
+    width: auto;
+    min-width: 60px;
+}
+
+.nyouos-tray-time {
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 1;
+}
+
+.nyouos-tray-date {
+    font-size: 10px;
+    opacity: 0.7;
+    line-height: 1;
+    margin-top: 2px;
+}
+
+.nyouos-tray-separator {
+    width: 1px;
+    height: 20px;
+    background: rgba(0, 0, 0, 0.1);
+    margin: 0 4px;
+}
+
+.nyouos-tray-popup {
+    position: absolute;
+    bottom: 40px;
+    right: 10px;
+    width: 280px;
+    background: rgba(249, 249, 249, 0.98);
+    backdrop-filter: blur(20px);
+    border-radius: 8px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 16px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+    transition: all 0.2s ease;
+    z-index: 9999;
+}
+
+.nyouos-tray-popup.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.nyouos-calendar-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.nyouos-calendar-header button {
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    font-size: 18px;
+    padding: 4px 8px;
+    border-radius: 4px;
+}
+
+.nyouos-calendar-header button:hover {
+    background: rgba(0, 0, 0, 0.05);
+}
+
+.nyouos-calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 2px;
+}
+
+.nyouos-calendar-weekday {
+    text-align: center;
+    font-size: 11px;
+    color: #666;
+    padding: 4px 0;
+    font-weight: 500;
+}
+
+.nyouos-calendar-day,
+.nyouos-calendar-empty {
+    text-align: center;
+    font-size: 12px;
+    padding: 6px 0;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.1s ease;
+}
+
+.nyouos-calendar-day:hover {
+    background: rgba(0, 120, 212, 0.1);
+}
+
+.nyouos-calendar-day.today {
+    background: #0078d4;
+    color: #fff;
+    font-weight: 600;
+}
+
+.nyouos-calendar-day.today:hover {
+    background: #106ebe;
+}
+
+.nyouos-volume-panel,
+.nyouos-network-panel,
+.nyouos-notifications-panel {
+    text-align: center;
+}
+
+.nyouos-volume-title,
+.nyouos-network-title,
+.nyouos-notifications-title {
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 16px;
+}
+
+.nyouos-volume-slider-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.nyouos-volume-slider {
+    flex: 1;
+    height: 4px;
+    -webkit-appearance: none;
+    appearance: none;
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 2px;
+    outline: none;
+}
+
+.nyouos-volume-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 14px;
+    height: 14px;
+    background: #0078d4;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.nyouos-volume-value {
+    font-size: 12px;
+    min-width: 30px;
+}
+
+.nyouos-network-status {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 12px;
+}
+
+.nyouos-network-info {
+    font-size: 12px;
+    color: #666;
+}
+
+.nyouos-notifications-empty {
+    font-size: 13px;
+    color: #999;
+    padding: 20px 0;
+}
+
+/* Dark theme */
+body.dark .nyouos-tray,
+body.dark .nyouos-tray-btn {
+    color: #eee;
+}
+
+body.dark .nyouos-tray-btn:hover {
+    background: rgba(255, 255, 255, 0.08);
+}
+
+body.dark .nyouos-tray-separator {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+body.dark .nyouos-tray-popup {
+    background: rgba(32, 32, 32, 0.98);
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+body.dark .nyouos-calendar-header button:hover {
+    background: rgba(255, 255, 255, 0.08);
+}
+
+body.dark .nyouos-calendar-day:hover {
+    background: rgba(0, 120, 212, 0.2);
+}
+
+body.dark .nyouos-calendar-weekday {
+    color: #aaa;
+}
+
+body.dark .nyouos-volume-slider {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+body.dark .nyouos-network-info {
+    color: #aaa;
+}
+
+body.dark .nyouos-notifications-empty {
+    color: #666;
+}

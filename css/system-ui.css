@@ -1,0 +1,1602 @@
+/* ================================================
+ * NyouOS 26.6 - System UI Styles
+ * Enhanced tray, context menu, Alt+Tab, shortcuts toast
+ * ================================================ */
+
+/* ============ CSS Variables ============ */
+:root {
+    --nyouos-accent: #0078d4;
+    --nyouos-accent-hover: #106ebe;
+    --nyouos-accent-rgb: 0, 120, 212;
+    --nyouos-accent-soft: rgba(0, 120, 212, 0.12);
+    --nyouos-bg-light: rgba(243, 243, 243, 0.85);
+    --nyouos-bg-dark: rgba(32, 32, 32, 0.85);
+    --nyouos-text-light: #1a1a1a;
+    --nyouos-text-dark: #f0f0f0;
+    --nyouos-text-secondary-light: #666666;
+    --nyouos-text-secondary-dark: #aaaaaa;
+    --nyouos-border: rgba(0, 0, 0, 0.1);
+    --nyouos-border-dark: rgba(255, 255, 255, 0.1);
+    --nyouos-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+    --nyouos-shadow-lg: 0 20px 60px rgba(0, 0, 0, 0.25);
+    --nyouos-blur: blur(30px) saturate(1.2);
+    --nyouos-blur-light: blur(12px);
+    --nyouos-radius-sm: 6px;
+    --nyouos-radius-md: 8px;
+    --nyouos-radius-lg: 12px;
+    --nyouos-radius-xl: 16px;
+    --nyouos-transition: 0.15s ease;
+    --nyouos-transition-slow: 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    --nyouos-transition-spring: 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* ============ Scrollbar Styling ============ */
+.nyouos-tray-enhanced-popup::-webkit-scrollbar,
+.nyouos-popup-notifications::-webkit-scrollbar,
+.nyouos-alttab-list::-webkit-scrollbar,
+.nyouos-context-menu::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+.nyouos-tray-enhanced-popup::-webkit-scrollbar-track,
+.nyouos-popup-notifications::-webkit-scrollbar-track,
+.nyouos-alttab-list::-webkit-scrollbar-track,
+.nyouos-context-menu::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.nyouos-tray-enhanced-popup::-webkit-scrollbar-thumb,
+.nyouos-popup-notifications::-webkit-scrollbar-thumb,
+.nyouos-alttab-list::-webkit-scrollbar-thumb,
+.nyouos-context-menu::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 3px;
+}
+
+.nyouos-tray-enhanced-popup::-webkit-scrollbar-thumb:hover,
+.nyouos-popup-notifications::-webkit-scrollbar-thumb:hover,
+.nyouos-alttab-list::-webkit-scrollbar-thumb:hover,
+.nyouos-context-menu::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 0, 0, 0.35);
+}
+
+body.dark .nyouos-tray-enhanced-popup::-webkit-scrollbar-thumb,
+body.dark .nyouos-popup-notifications::-webkit-scrollbar-thumb,
+body.dark .nyouos-alttab-list::-webkit-scrollbar-thumb,
+body.dark .nyouos-context-menu::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+body.dark .nyouos-tray-enhanced-popup::-webkit-scrollbar-thumb:hover,
+body.dark .nyouos-popup-notifications::-webkit-scrollbar-thumb:hover,
+body.dark .nyouos-alttab-list::-webkit-scrollbar-thumb:hover,
+body.dark .nyouos-context-menu::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.35);
+}
+
+/* ============ Enhanced System Tray ============ */
+.nyouos-tray-enhanced {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    height: 32px;
+    padding: 0 4px;
+}
+
+.nyouos-tray-group {
+    display: flex;
+    align-items: center;
+    gap: 1px;
+}
+
+.nyouos-tray-btn-e {
+    width: 32px;
+    height: 30px;
+    border: none;
+    background: transparent;
+    color: var(--text-color, #333);
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform var(--nyouos-transition), background var(--nyouos-transition);
+    position: relative;
+    padding: 0;
+}
+
+.nyouos-tray-btn-e:hover {
+    background: rgba(0, 0, 0, 0.06);
+    transform: scale(1.15);
+}
+
+.nyouos-tray-btn-e:active {
+    background: rgba(0, 0, 0, 0.1);
+    transform: scale(0.92);
+}
+
+.nyouos-tray-btn-e svg {
+    width: 16px;
+    height: 16px;
+}
+
+.nyouos-tray-badge {
+    position: absolute;
+    top: 0;
+    right: 0;
+    min-width: 8px;
+    height: 8px;
+    background: var(--nyouos-accent);
+    border-radius: 4px;
+    border: 1px solid var(--taskbar-bg, #fff);
+    font-size: 7px;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 2px;
+    line-height: 1;
+}
+
+.nyouos-tray-separator-e {
+    width: 1px;
+    height: 18px;
+    background: rgba(0, 0, 0, 0.12);
+    margin: 0 3px;
+}
+
+.nyouos-tray-clock-btn {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0 8px;
+    width: auto;
+    min-width: 62px;
+    height: 30px;
+    gap: 0;
+    border-radius: 6px;
+}
+
+.nyouos-tray-clock-btn:hover {
+    background: rgba(0, 0, 0, 0.06);
+    transform: none;
+}
+
+.nyouos-tray-clock-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1px;
+    line-height: 1;
+}
+
+.nyouos-tray-time {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-color, #333);
+}
+
+.nyouos-tray-date {
+    font-size: 10px;
+    color: var(--text-secondary, #666);
+}
+
+/* Battery icon colors by percentage */
+.nyouos-tray-battery-icon {
+    color: #107c10;
+    transition: color 0.3s ease;
+}
+
+.nyouos-tray-battery-icon.medium {
+    color: #ffb900;
+}
+
+.nyouos-tray-battery-icon.low {
+    color: #e81123;
+    animation: nyouos-battery-low 2s ease-in-out infinite;
+}
+
+.nyouos-tray-battery-text {
+    font-size: 10px;
+    font-weight: 600;
+    margin-left: 2px;
+    font-variant-numeric: tabular-nums;
+    color: var(--text-color, #333);
+}
+
+/* Bluetooth icon active state */
+.nyouos-tray-btn-e svg.icon-bluetooth {
+    transition: color 0.2s ease;
+}
+
+.nyouos-tray-btn-e.active svg.icon-bluetooth {
+    color: var(--nyouos-accent);
+}
+
+/* Volume icon animation */
+.nyouos-tray-btn-e svg.icon-volume {
+    transition: transform 0.2s ease;
+}
+
+.nyouos-tray-btn-e:hover svg.icon-volume {
+    transform: scale(1.1);
+}
+
+/* ============ Tray Popup Panel ============ */
+.nyouos-tray-enhanced-popup {
+    position: fixed;
+    width: 280px;
+    max-height: 400px;
+    background: var(--nyouos-bg-light);
+    backdrop-filter: var(--nyouos-blur);
+    -webkit-backdrop-filter: var(--nyouos-blur);
+    border-radius: var(--nyouos-radius-lg);
+    box-shadow: var(--nyouos-shadow), 0 2px 8px rgba(0, 0, 0, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    z-index: 99999;
+    display: none;
+    overflow: hidden;
+    font-size: 13px;
+    color: var(--nyouos-text-light);
+}
+
+.nyouos-tray-enhanced-popup.nyouos-popup-show {
+    animation: nyouos-popup-in 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes nyouos-popup-in {
+    from { opacity: 0; transform: translateY(-8px) scale(0.96); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* Popup arrow indicator */
+.nyouos-tray-enhanced-popup::after {
+    content: '';
+    position: absolute;
+    top: -6px;
+    left: var(--popup-arrow-left, 20px);
+    width: 12px;
+    height: 12px;
+    background: inherit;
+    transform: rotate(45deg);
+    border-left: 1px solid rgba(255, 255, 255, 0.3);
+    border-top: 1px solid rgba(255, 255, 255, 0.3);
+    background: var(--nyouos-bg-light);
+}
+
+.nyouos-popup-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 16px 10px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.nyouos-popup-title {
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.nyouos-popup-action {
+    font-size: 12px;
+    color: var(--nyouos-accent);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: var(--nyouos-radius-sm);
+    transition: background var(--nyouos-transition);
+}
+
+.nyouos-popup-action:hover {
+    background: var(--nyouos-accent-soft);
+}
+
+.nyouos-popup-nav {
+    width: 28px;
+    height: 28px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    border-radius: 6px;
+    font-size: 18px;
+    color: var(--nyouos-text-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background var(--nyouos-transition);
+}
+
+.nyouos-popup-nav:hover {
+    background: rgba(0, 0, 0, 0.06);
+}
+
+.nyouos-popup-control {
+    padding: 12px 16px 16px;
+}
+
+.nyouos-popup-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+}
+
+.nyouos-popup-row:last-child {
+    margin-bottom: 0;
+}
+
+.nyouos-popup-icon {
+    font-size: 16px;
+    width: 24px;
+    text-align: center;
+}
+
+.nyouos-popup-value {
+    min-width: 32px;
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+    font-weight: 500;
+}
+
+/* Custom volume slider */
+.nyouos-slider {
+    flex: 1;
+    height: 4px;
+    -webkit-appearance: none;
+    appearance: none;
+    background: linear-gradient(to right,
+        var(--nyouos-accent) 0%,
+        var(--nyouos-accent) var(--slider-fill, 70%),
+        rgba(0, 0, 0, 0.12) var(--slider-fill, 70%),
+        rgba(0, 0, 0, 0.12) 100%);
+    border-radius: 2px;
+    outline: none;
+    cursor: pointer;
+}
+
+.nyouos-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 14px;
+    height: 14px;
+    background: var(--nyouos-accent);
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    transition: transform var(--nyouos-transition);
+}
+
+.nyouos-slider::-webkit-slider-thumb:hover {
+    transform: scale(1.15);
+}
+
+.nyouos-slider::-moz-range-thumb {
+    width: 14px;
+    height: 14px;
+    background: var(--nyouos-accent);
+    border-radius: 50%;
+    cursor: pointer;
+    border: none;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.nyouos-popup-status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    font-weight: 500;
+}
+
+.nyouos-popup-status.online { color: #107c10; }
+.nyouos-popup-status.offline { color: #e81123; }
+
+.nyouos-status-indicator {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: currentColor;
+    box-shadow: 0 0 8px currentColor;
+    animation: nyouos-pulse 2s infinite;
+}
+
+@keyframes nyouos-pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+.nyouos-popup-list {
+    padding: 4px 0 12px;
+}
+
+.nyouos-popup-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 16px;
+    transition: background var(--nyouos-transition);
+    cursor: pointer;
+}
+
+.nyouos-popup-item:hover {
+    background: rgba(0, 0, 0, 0.04);
+}
+
+.nyouos-popup-item .nyouos-popup-icon {
+    width: 32px;
+    font-size: 18px;
+}
+
+.nyouos-popup-item span:nth-child(2) {
+    flex: 1;
+    font-size: 13px;
+}
+
+.nyouos-popup-badge {
+    font-size: 11px;
+    color: #666;
+    padding: 2px 8px;
+    background: rgba(0, 0, 0, 0.06);
+    border-radius: 10px;
+}
+
+.nyouos-popup-notifications {
+    max-height: 280px;
+    overflow-y: auto;
+    padding: 4px 0;
+}
+
+.nyouos-notif-item {
+    display: flex;
+    gap: 10px;
+    padding: 10px 16px;
+    transition: background var(--nyouos-transition);
+    animation: nyouos-notif-in 0.25s ease;
+}
+
+@keyframes nyouos-notif-in {
+    from { opacity: 0; transform: translateX(-10px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+.nyouos-notif-item:hover {
+    background: rgba(0, 0, 0, 0.04);
+}
+
+.nyouos-notif-icon {
+    font-size: 20px;
+    flex-shrink: 0;
+}
+
+.nyouos-notif-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.nyouos-notif-title {
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 2px;
+}
+
+.nyouos-notif-msg {
+    font-size: 12px;
+    color: var(--text-secondary, #666);
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.nyouos-notif-time {
+    font-size: 11px;
+    color: var(--text-tertiary, #999);
+    margin-top: 4px;
+}
+
+.nyouos-popup-empty {
+    text-align: center;
+    padding: 24px 16px;
+    color: var(--text-secondary, #666);
+    font-size: 13px;
+}
+
+.nyouos-empty-icon {
+    font-size: 36px;
+    margin-bottom: 8px;
+    opacity: 0.5;
+}
+
+.nyouos-popup-toggle {
+    width: 44px;
+    height: 22px;
+    border: none;
+    background: rgba(0, 0, 0, 0.15);
+    border-radius: 11px;
+    position: relative;
+    cursor: pointer;
+    transition: background 0.2s ease;
+    padding: 0;
+}
+
+.nyouos-popup-toggle.on {
+    background: var(--nyouos-accent);
+}
+
+.nyouos-popup-toggle span {
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 18px;
+    height: 18px;
+    background: #fff;
+    border-radius: 50%;
+    transition: transform 0.2s ease;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.nyouos-popup-toggle.on span {
+    transform: translateX(22px);
+}
+
+/* Battery display in popup */
+.nyouos-battery-display {
+    padding: 16px;
+    text-align: center;
+}
+
+.nyouos-battery-large {
+    font-size: 42px;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    color: #107c10;
+    margin-bottom: 8px;
+    transition: color 0.3s ease;
+}
+
+.nyouos-battery-large.medium {
+    color: #ffb900;
+}
+
+.nyouos-battery-large.low {
+    color: #e81123;
+    animation: nyouos-battery-low 2s ease-in-out infinite;
+}
+
+@keyframes nyouos-battery-low {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+.nyouos-battery-status {
+    font-size: 13px;
+    color: var(--text-secondary, #666);
+    margin-bottom: 12px;
+}
+
+.nyouos-battery-bar {
+    height: 6px;
+    background: rgba(0, 0, 0, 0.08);
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.nyouos-battery-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #107c10, var(--nyouos-accent));
+    border-radius: 3px;
+    transition: width 0.3s ease;
+}
+
+.nyouos-battery-fill.medium {
+    background: linear-gradient(90deg, #ffb900, #ff8c00);
+}
+
+.nyouos-battery-fill.low {
+    background: linear-gradient(90deg, #e81123, #c42b1c);
+}
+
+/* Calendar */
+.nyouos-calendar {
+    padding: 0 16px 12px;
+}
+
+.nyouos-calendar-weekday {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 2px;
+    text-align: center;
+    font-size: 11px;
+    color: var(--text-secondary, #666);
+    padding: 6px 0;
+    font-weight: 500;
+}
+
+.nyouos-calendar-weekday div {
+    padding: 4px 0;
+}
+
+.nyouos-calendar-day {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 2px;
+}
+
+.nyouos-calendar-day > div,
+.nyouos-calendar-empty {
+    text-align: center;
+    font-size: 12px;
+    padding: 7px 0;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all var(--nyouos-transition);
+    color: var(--nyouos-text-light);
+}
+
+.nyouos-calendar-day > div:hover {
+    background: rgba(0, 0, 0, 0.06);
+    transform: scale(1.1);
+}
+
+.nyouos-calendar-day > div.today {
+    background: var(--nyouos-accent);
+    color: #fff;
+    font-weight: 600;
+}
+
+.nyouos-calendar-day > div.today:hover {
+    background: var(--nyouos-accent-hover);
+    transform: scale(1.15);
+}
+
+.nyouos-calendar-empty {
+    visibility: hidden;
+}
+
+.nyouos-popup-time-big {
+    text-align: center;
+    font-size: 20px;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    padding: 8px 0 16px;
+    color: var(--nyouos-text-light);
+}
+
+/* ============ Global Context Menu ============ */
+.nyouos-context-menu {
+    position: fixed;
+    min-width: 200px;
+    background: var(--nyouos-bg-light);
+    backdrop-filter: var(--nyouos-blur);
+    -webkit-backdrop-filter: var(--nyouos-blur);
+    border-radius: var(--nyouos-radius-md);
+    box-shadow: var(--nyouos-shadow), 0 2px 6px rgba(0, 0, 0, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    padding: 4px;
+    z-index: 100000;
+    font-size: 13px;
+    color: var(--nyouos-text-light);
+    user-select: none;
+    animation: nyouos-cm-in 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes nyouos-cm-in {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+.nyouos-context-menu.nyouos-cm-submenu {
+    min-width: 180px;
+}
+
+.nyouos-cm-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0 10px;
+    height: 36px;
+    border-radius: var(--nyouos-radius-sm);
+    cursor: pointer;
+    transition: background var(--nyouos-transition);
+    position: relative;
+    line-height: 36px;
+}
+
+.nyouos-cm-item:hover {
+    background: var(--nyouos-accent-soft);
+}
+
+.nyouos-cm-item.active {
+    background: var(--nyouos-accent-soft);
+}
+
+.nyouos-cm-item.disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.nyouos-cm-item.disabled:hover {
+    background: transparent;
+}
+
+.nyouos-cm-icon {
+    width: 16px;
+    height: 16px;
+    font-size: 14px;
+    text-align: center;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.nyouos-cm-label {
+    flex: 1;
+    font-size: 14px;
+    white-space: nowrap;
+}
+
+.nyouos-cm-shortcut {
+    font-size: 12px;
+    color: var(--nyouos-text-secondary-light);
+    margin-left: 20px;
+}
+
+.nyouos-cm-arrow {
+    margin-left: auto;
+    font-size: 14px;
+    color: var(--nyouos-text-secondary-light);
+}
+
+.nyouos-cm-separator {
+    height: 1px;
+    background: rgba(0, 0, 0, 0.08);
+    margin: 4px 6px;
+}
+
+.nyouos-cm-empty {
+    padding: 16px;
+    text-align: center;
+    color: var(--nyouos-text-secondary-light);
+    font-size: 12px;
+}
+
+/* ============ Alt+Tab Switcher ============ */
+.nyouos-alttab-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 99999;
+    display: none;
+    align-items: center;
+    justify-content: center;
+}
+
+.nyouos-alttab-overlay.nyouos-alttab-show {
+    display: flex;
+    animation: nyouos-alttab-in 0.2s ease forwards;
+}
+
+.nyouos-alttab-overlay.nyouos-alttab-hide {
+    animation: nyouos-alttab-out 0.2s ease forwards;
+}
+
+@keyframes nyouos-alttab-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes nyouos-alttab-out {
+    from { opacity: 1; }
+    to { opacity: 0; }
+}
+
+.nyouos-alttab-bg {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+}
+
+.nyouos-alttab-panel {
+    position: relative;
+    width: 90%;
+    max-width: 600px;
+    max-height: 80vh;
+    background: var(--nyouos-bg-light);
+    backdrop-filter: blur(40px) saturate(1.2);
+    -webkit-backdrop-filter: blur(40px) saturate(1.2);
+    border-radius: 14px;
+    box-shadow: var(--nyouos-shadow-lg), 0 4px 16px rgba(0, 0, 0, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    animation: nyouos-alttab-panel-in 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes nyouos-alttab-panel-in {
+    from { opacity: 0; transform: translateY(20px) scale(0.95); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.nyouos-alttab-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.nyouos-alttab-app-name {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--nyouos-text-light);
+}
+
+.nyouos-alttab-hint {
+    font-size: 12px;
+    color: var(--nyouos-text-secondary-light);
+}
+
+.nyouos-alttab-list {
+    display: flex;
+    gap: 16px;
+    overflow-x: auto;
+    padding: 8px 4px;
+    flex-wrap: nowrap;
+}
+
+.nyouos-alttab-item {
+    flex-shrink: 0;
+    width: 180px;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+    text-align: center;
+}
+
+.nyouos-alttab-item:hover {
+    transform: translateY(-4px);
+}
+
+.nyouos-alttab-item.active .nyouos-alttab-thumb {
+    border-color: var(--nyouos-accent);
+    box-shadow: 0 8px 24px rgba(var(--nyouos-accent-rgb), 0.4);
+}
+
+.nyouos-alttab-thumb {
+    width: 180px;
+    height: 120px;
+    background: #fff;
+    border-radius: 10px;
+    border: 3px solid transparent;
+    overflow: hidden;
+    margin: 0 auto 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+.nyouos-alttab-thumb-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 12px;
+}
+
+.nyouos-alttab-icon {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+}
+
+.nyouos-alttab-title-text {
+    font-size: 11px;
+    color: var(--nyouos-text-light);
+    text-align: center;
+    line-height: 1.3;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.nyouos-alttab-item-label {
+    font-size: 12px;
+    color: var(--nyouos-text-light);
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding: 0 4px;
+}
+
+.nyouos-alttab-footer {
+    text-align: center;
+    font-size: 12px;
+    color: var(--nyouos-text-secondary-light);
+    padding-top: 8px;
+    border-top: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.nyouos-alttab-footer kbd {
+    display: inline-block;
+    padding: 2px 6px;
+    background: rgba(0, 0, 0, 0.06);
+    border-radius: 4px;
+    font-family: monospace;
+    font-size: 11px;
+    margin: 0 2px;
+}
+
+/* ============ Shortcut Toast ============ */
+.nyouos-shortcut-toast {
+    position: fixed;
+    bottom: 80px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(32, 32, 32, 0.95);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 24px;
+    font-size: 13px;
+    font-weight: 500;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+    z-index: 100001;
+    animation: nyouos-toast-in 0.2s ease;
+    pointer-events: none;
+}
+
+@keyframes nyouos-toast-in {
+    from { opacity: 0; transform: translateX(-50%) translateY(10px); }
+    to { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
+.nyouos-shortcut-toast kbd {
+    display: inline-block;
+    padding: 2px 6px;
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 4px;
+    font-family: monospace;
+    font-size: 12px;
+    margin: 0 2px;
+}
+
+/* ============ Window Animation Keyframes ============ */
+@keyframes nyouos-window-open {
+    from { opacity: 0; transform: scale(0.92) translateY(10px); }
+    to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+@keyframes nyouos-window-close {
+    from { opacity: 1; transform: scale(1) translateY(0); }
+    to { opacity: 0; transform: scale(0.92) translateY(10px); }
+}
+
+@keyframes nyouos-window-minimize {
+    from { opacity: 1; transform: scale(1); }
+    to { opacity: 0; transform: scale(0.3); }
+}
+
+@keyframes nyouos-window-restore {
+    from { opacity: 0; transform: scale(0.3); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes nyouos-window-maximize {
+    from { opacity: 1; transform: scale(1); }
+    to { opacity: 1; transform: scale(1.02); }
+}
+
+@keyframes nyouos-fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes nyouos-fade-out {
+    from { opacity: 1; }
+    to { opacity: 0; }
+}
+
+@keyframes nyouos-scale-in {
+    from { opacity: 0; transform: scale(0.9); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes nyouos-slide-up {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes nyouos-slide-down {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes nyouos-pulse-ring {
+    0% { box-shadow: 0 0 0 0 rgba(var(--nyouos-accent-rgb), 0.4); }
+    70% { box-shadow: 0 0 0 8px rgba(var(--nyouos-accent-rgb), 0); }
+    100% { box-shadow: 0 0 0 0 rgba(var(--nyouos-accent-rgb), 0); }
+}
+
+/* ============ Dark Theme Adaptation ============ */
+@media (prefers-color-scheme: dark) {
+    .nyouos-tray-enhanced-popup {
+        background: var(--nyouos-bg-dark);
+        border-color: rgba(255, 255, 255, 0.1);
+        color: var(--nyouos-text-dark);
+    }
+
+    .nyouos-tray-enhanced-popup::after {
+        background: var(--nyouos-bg-dark);
+        border-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .nyouos-tray-btn-e {
+        color: var(--nyouos-text-dark);
+    }
+
+    .nyouos-tray-btn-e:hover {
+        background: rgba(255, 255, 255, 0.08);
+    }
+
+    .nyouos-tray-time {
+        color: var(--nyouos-text-dark);
+    }
+
+    .nyouos-tray-date {
+        color: #aaa;
+    }
+
+    .nyouos-tray-separator-e {
+        background: rgba(255, 255, 255, 0.1);
+    }
+
+    .nyouos-popup-header {
+        border-bottom-color: rgba(255, 255, 255, 0.08);
+    }
+
+    .nyouos-popup-nav,
+    .nyouos-popup-nav:hover {
+        color: var(--nyouos-text-dark);
+    }
+
+    .nyouos-popup-nav:hover {
+        background: rgba(255, 255, 255, 0.08);
+    }
+
+    .nyouos-calendar-day > div {
+        color: var(--nyouos-text-dark);
+    }
+
+    .nyouos-calendar-day > div:hover {
+        background: rgba(255, 255, 255, 0.08);
+    }
+
+    .nyouos-calendar-weekday {
+        color: #aaa;
+    }
+
+    .nyouos-popup-row .nyouos-popup-value {
+        color: var(--nyouos-text-dark);
+    }
+
+    .nyouos-popup-item:hover {
+        background: rgba(255, 255, 255, 0.05);
+    }
+
+    .nyouos-popup-badge {
+        background: rgba(255, 255, 255, 0.1);
+        color: #ccc;
+    }
+
+    .nyouos-notif-msg {
+        color: #aaa;
+    }
+
+    .nyouos-notif-time {
+        color: #777;
+    }
+
+    .nyouos-battery-large {
+        color: #4caf50;
+    }
+
+    .nyouos-battery-large.medium {
+        color: #ffb900;
+    }
+
+    .nyouos-battery-large.low {
+        color: #ff4d4d;
+    }
+
+    .nyouos-popup-time-big {
+        color: var(--nyouos-text-dark);
+    }
+
+    .nyouos-context-menu {
+        background: var(--nyouos-bg-dark);
+        border-color: rgba(255, 255, 255, 0.1);
+        color: var(--nyouos-text-dark);
+    }
+
+    .nyouos-cm-item:hover {
+        background: rgba(var(--nyouos-accent-rgb), 0.25);
+    }
+
+    .nyouos-cm-label {
+        color: var(--nyouos-text-dark);
+    }
+
+    .nyouos-cm-shortcut {
+        color: #aaa;
+    }
+
+    .nyouos-cm-arrow {
+        color: #aaa;
+    }
+
+    .nyouos-cm-separator {
+        background: rgba(255, 255, 255, 0.08);
+    }
+
+    .nyouos-alttab-panel {
+        background: var(--nyouos-bg-dark);
+        border-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .nyouos-alttab-app-name {
+        color: var(--nyouos-text-dark);
+    }
+
+    .nyouos-alttab-hint {
+        color: #aaa;
+    }
+
+    .nyouos-alttab-thumb {
+        background: #2a2a2a;
+    }
+
+    .nyouos-alttab-title-text {
+        color: var(--nyouos-text-dark);
+    }
+
+    .nyouos-alttab-item-label {
+        color: var(--nyouos-text-dark);
+    }
+
+    .nyouos-alttab-footer {
+        color: #aaa;
+        border-top-color: rgba(255, 255, 255, 0.08);
+    }
+
+    .nyouos-slider {
+        background: linear-gradient(to right,
+            #60cdff 0%,
+            #60cdff var(--slider-fill, 70%),
+            rgba(255, 255, 255, 0.12) var(--slider-fill, 70%),
+            rgba(255, 255, 255, 0.12) 100%);
+    }
+
+    .nyouos-popup-empty {
+        color: #aaa;
+    }
+
+    .nyouos-battery-bar {
+        background: rgba(255, 255, 255, 0.1);
+    }
+
+    .nyouos-battery-status {
+        color: #aaa;
+    }
+}
+
+/* body.dark class toggle support */
+body.dark .nyouos-tray-enhanced-popup,
+body.dark .nyouos-context-menu,
+body.dark .nyouos-alttab-panel {
+    background: var(--nyouos-bg-dark);
+    border-color: rgba(255, 255, 255, 0.1);
+    color: var(--nyouos-text-dark);
+}
+
+body.dark .nyouos-tray-enhanced-popup::after {
+    background: var(--nyouos-bg-dark);
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+body.dark .nyouos-tray-btn-e {
+    color: var(--nyouos-text-dark);
+}
+
+body.dark .nyouos-tray-btn-e:hover {
+    background: rgba(255, 255, 255, 0.08);
+}
+
+body.dark .nyouos-popup-title,
+body.dark .nyouos-cm-label,
+body.dark .nyouos-alttab-app-name,
+body.dark .nyouos-alttab-title-text,
+body.dark .nyouos-alttab-item-label {
+    color: var(--nyouos-text-dark);
+}
+
+body.dark .nyouos-cm-item:hover {
+    background: rgba(var(--nyouos-accent-rgb), 0.25);
+}
+
+body.dark .nyouos-calendar-day > div {
+    color: var(--nyouos-text-dark);
+}
+
+body.dark .nyouos-calendar-day > div:hover {
+    background: rgba(255, 255, 255, 0.08);
+}
+
+body.dark .nyouos-calendar-weekday,
+body.dark .nyouos-popup-empty,
+body.dark .nyouos-notif-time,
+body.dark .nyouos-alttab-hint,
+body.dark .nyouos-alttab-footer {
+    color: #aaa;
+}
+
+body.dark .nyouos-popup-separator,
+body.dark .nyouos-cm-separator,
+body.dark .nyouos-alttab-footer {
+    background: rgba(255, 255, 255, 0.08);
+}
+
+body.dark .nyouos-alttab-thumb {
+    background: #2a2a2a;
+}
+
+body.dark .nyouos-popup-row .nyouos-popup-value,
+body.dark .nyouos-tray-time,
+body.dark .nyouos-calendar-day > div,
+body.dark .nyouos-popup-time-big {
+    color: var(--nyouos-text-dark);
+}
+
+body.dark .nyouos-tray-date,
+body.dark .nyouos-popup-item span:nth-child(2),
+body.dark .nyouos-battery-status,
+body.dark .nyouos-popup-nav,
+body.dark .nyouos-popup-action {
+    color: #aaa;
+}
+
+body.dark .nyouos-popup-nav:hover,
+body.dark .nyouos-popup-item:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+body.dark .nyouos-popup-badge {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+body.dark .nyouos-slider {
+    background: linear-gradient(to right,
+        #60cdff 0%,
+        #60cdff var(--slider-fill, 70%),
+        rgba(255, 255, 255, 0.12) var(--slider-fill, 70%),
+        rgba(255, 255, 255, 0.12) 100%);
+}
+
+body.dark .nyouos-battery-large {
+    color: #4caf50;
+}
+
+body.dark .nyouos-battery-large.medium {
+    color: #ffb900;
+}
+
+body.dark .nyouos-battery-large.low {
+    color: #ff4d4d;
+}
+
+body.dark .nyouos-notif-msg {
+    color: #aaa;
+}
+
+body.dark .nyouos-popup-status.online {
+    color: #4caf50;
+}
+
+/* High contrast support */
+@media (prefers-contrast: high) {
+    .nyouos-cm-item:hover {
+        background: var(--nyouos-accent);
+        color: #fff;
+    }
+
+    .nyouos-cm-item:hover .nyouos-cm-shortcut,
+    .nyouos-cm-item:hover .nyouos-cm-arrow {
+        color: #fff;
+    }
+}
+
+/* ============ Responsive Design - Tablet ============ */
+@media (max-width: 768px) {
+    .nyouos-tray-enhanced {
+        padding: 0 2px;
+    }
+
+    .nyouos-tray-btn-e {
+        width: 34px;
+        height: 32px;
+    }
+
+    .nyouos-tray-btn-e svg {
+        width: 18px;
+        height: 18px;
+    }
+
+    .nyouos-tray-clock-btn {
+        padding: 0 6px;
+        min-width: 54px;
+    }
+
+    .nyouos-tray-time {
+        font-size: 10px;
+    }
+
+    .nyouos-tray-date {
+        font-size: 9px;
+    }
+
+    .nyouos-tray-separator-e {
+        height: 16px;
+        margin: 0 2px;
+    }
+
+    .nyouos-tray-enhanced-popup {
+        width: calc(100vw - 16px);
+        max-width: 320px;
+        left: 8px !important;
+        right: 8px !important;
+    }
+
+    .nyouos-battery-large {
+        font-size: 36px;
+    }
+
+    .nyouos-alttab-panel {
+        max-width: 95%;
+        padding: 16px;
+        gap: 12px;
+    }
+
+    .nyouos-alttab-item {
+        width: 150px;
+    }
+
+    .nyouos-alttab-thumb {
+        width: 150px;
+        height: 100px;
+    }
+
+    .nyouos-alttab-title {
+        flex-direction: column;
+        gap: 4px;
+        align-items: flex-start;
+    }
+
+    .nyouos-context-menu {
+        min-width: 180px;
+        font-size: 12px;
+    }
+
+    .nyouos-cm-item {
+        height: 34px;
+        padding: 0 8px;
+    }
+
+    .nyouos-cm-label {
+        font-size: 13px;
+    }
+
+    .nyouos-cm-shortcut {
+        font-size: 11px;
+    }
+}
+
+/* ============ Responsive Design - Mobile ============ */
+@media (max-width: 480px) {
+    .nyouos-tray-enhanced {
+        gap: 0;
+        height: 36px;
+    }
+
+    .nyouos-tray-group {
+        gap: 0;
+    }
+
+    .nyouos-tray-btn-e {
+        width: 32px;
+        height: 30px;
+    }
+
+    .nyouos-tray-battery-text {
+        display: none;
+    }
+
+    .nyouos-tray-clock-btn {
+        min-width: auto;
+        padding: 0 4px;
+    }
+
+    .nyouos-tray-date {
+        display: none;
+    }
+
+    .nyouos-tray-separator-e {
+        display: none;
+    }
+
+    .nyouos-calendar {
+        padding: 0 12px 8px;
+    }
+
+    .nyouos-calendar-day > div,
+    .nyouos-calendar-empty {
+        font-size: 11px;
+        padding: 5px 0;
+    }
+
+    .nyouos-alttab-list {
+        gap: 10px;
+        padding: 4px 2px;
+    }
+
+    .nyouos-alttab-item {
+        width: 130px;
+    }
+
+    .nyouos-alttab-thumb {
+        width: 130px;
+        height: 88px;
+    }
+
+    .nyouos-alttab-item-label {
+        font-size: 11px;
+    }
+
+    .nyouos-alttab-title-text {
+        font-size: 10px;
+    }
+
+    .nyouos-shortcut-toast {
+        bottom: 60px;
+        font-size: 12px;
+        padding: 8px 16px;
+    }
+
+    .nyouos-popup-notifications {
+        max-height: 220px;
+    }
+
+    .nyouos-notif-item {
+        padding: 8px 12px;
+    }
+
+    .nyouos-notif-title {
+        font-size: 12px;
+    }
+
+    .nyouos-notif-msg {
+        font-size: 11px;
+    }
+}
+
+/* ============ Reduced Motion Support ============ */
+@media (prefers-reduced-motion: reduce) {
+    .nyouos-tray-enhanced-popup,
+    .nyouos-context-menu,
+    .nyouos-alttab-overlay,
+    .nyouos-alttab-panel,
+    .nyouos-shortcut-toast,
+    .nyouos-notif-item,
+    .nyouos-battery-large.low,
+    .nyouos-status-indicator {
+        animation: none !important;
+    }
+
+    .nyouos-tray-btn-e:hover,
+    .nyouos-tray-btn-e:active,
+    .nyouos-alttab-item:hover,
+    .nyouos-calendar-day > div:hover,
+    .nyouos-calendar-day > div.today:hover {
+        transform: none !important;
+    }
+
+    .nyouos-tray-btn-e,
+    .nyouos-popup-toggle,
+    .nyouos-slider::-webkit-slider-thumb,
+    .nyouos-cm-item,
+    .nyouos-popup-nav,
+    .nyouos-popup-action,
+    .nyouos-popup-item,
+    .nyouos-alttab-item,
+    .nyouos-notif-item {
+        transition: none !important;
+    }
+
+    .nyouos-battery-fill {
+        transition: none !important;
+    }
+
+    .nyouos-window-open,
+    .nyouos-window-close,
+    .nyouos-window-minimize,
+    .nyouos-window-restore {
+        animation: none !important;
+    }
+}
+
+/* ============ Animation Effect Utilities ============ */
+.nyouos-animate-fade-in {
+    animation: nyouos-fade-in 0.2s ease forwards;
+}
+
+.nyouos-animate-fade-out {
+    animation: nyouos-fade-out 0.2s ease forwards;
+}
+
+.nyouos-animate-scale-in {
+    animation: nyouos-scale-in 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.nyouos-animate-slide-up {
+    animation: nyouos-slide-up 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.nyouos-animate-slide-down {
+    animation: nyouos-slide-down 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.nyouos-animate-pulse-ring {
+    animation: nyouos-pulse-ring 1.5s ease-out infinite;
+}
+
+/* ============ Battery fill color states ============ */
+.nyouos-battery-fill.charging {
+    background: linear-gradient(90deg, #107c10, var(--nyouos-accent));
+}
+
+/* ============ Network status animation ============ */
+@keyframes nyouos-network-pulse {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.2); opacity: 0.7; }
+}
+
+.nyouos-network-active .nyouos-status-indicator {
+    animation: nyouos-network-pulse 2s ease-in-out infinite;
+}
+
+/* ============ Popup slide direction variants ============ */
+.nyouos-tray-enhanced-popup.slide-left {
+    animation: nyouos-popup-in-left 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes nyouos-popup-in-left {
+    from { opacity: 0; transform: translateX(-8px) scale(0.96); }
+    to { opacity: 1; transform: translateX(0) scale(1); }
+}
+
+.nyouos-tray-enhanced-popup.slide-right {
+    animation: nyouos-popup-in-right 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes nyouos-popup-in-right {
+    from { opacity: 0; transform: translateX(8px) scale(0.96); }
+    to { opacity: 1; transform: translateX(0) scale(1); }
+}

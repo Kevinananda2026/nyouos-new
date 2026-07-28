@@ -1,0 +1,173 @@
+body.liquid-glass .taskbar,
+body.liquid-glass .start-menu,
+body.liquid-glass .control-center,
+body.liquid-glass .notification-center,
+body.liquid-glass .context-menu,
+body.liquid-glass .power-menu,
+body.liquid-glass .fluent-toast {
+    background: rgba(255, 255, 255, 0.55) !important;
+    backdrop-filter: blur(40px) saturate(200%) brightness(1.08) !important;
+    -webkit-backdrop-filter: blur(40px) saturate(200%) brightness(1.08) !important;
+    border: 1px solid rgba(255, 255, 255, 0.35) !important;
+    box-shadow:
+        inset 0 1px 1px rgba(255, 255, 255, 0.6),
+        inset 0 -1px 1px rgba(255, 255, 255, 0.15),
+        inset 1px 0 1px rgba(255, 255, 255, 0.2),
+        inset -1px 0 1px rgba(255, 255, 255, 0.2),
+        0 8px 32px rgba(0, 0, 0, 0.12),
+        0 2px 8px rgba(0, 0, 0, 0.08) !important;
+}
+
+body.liquid-glass .window {
+    background: rgba(255, 255, 255, 0.6) !important;
+    backdrop-filter: blur(40px) saturate(200%) brightness(1.08) !important;
+    -webkit-backdrop-filter: blur(40px) saturate(200%) brightness(1.08) !important;
+    border: 1px solid rgba(255, 255, 255, 0.35) !important;
+    box-shadow:
+        inset 0 1px 1px rgba(255, 255, 255, 0.6),
+        inset 0 -1px 1px rgba(255, 255, 255, 0.15),
+        0 8px 32px rgba(0, 0, 0, 0.12),
+        0 2px 8px rgba(0, 0, 0, 0.08) !important;
+}
+
+body.liquid-glass .window-titlebar {
+    background: transparent !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2) !important;
+}
+
+body.liquid-glass .control-tile {
+    background: rgba(255, 255, 255, 0.25) !important;
+    backdrop-filter: blur(20px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
+    border: 1px solid rgba(255, 255, 255, 0.3) !important;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4) !important;
+}
+
+body.liquid-glass .control-tile[data-active="true"] {
+    background: var(--accent) !important;
+    backdrop-filter: none !important;
+}
+
+body.liquid-glass .notification-tile {
+    background: rgba(255, 255, 255, 0.2) !important;
+    backdrop-filter: blur(20px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
+    border: 1px solid rgba(255, 255, 255, 0.25) !important;
+}
+
+body.liquid-glass .start-search {
+    background: rgba(255, 255, 255, 0.3) !important;
+    backdrop-filter: blur(20px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
+    border: 1px solid rgba(255, 255, 255, 0.35) !important;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4) !important;
+}
+
+body.liquid-glass .fw-card {
+    background: rgba(255, 255, 255, 0.3) !important;
+    backdrop-filter: blur(30px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(30px) saturate(180%) !important;
+    border: 1px solid rgba(255, 255, 255, 0.3) !important;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4) !important;
+}
+
+body.liquid-glass .taskbar-btn,
+body.liquid-glass .taskbar-app,
+body.liquid-glass .taskbar-start,
+body.liquid-glass .taskbar-control,
+body.liquid-glass .taskbar-notification {
+    background: transparent !important;
+    backdrop-filter: none !important;
+}
+
+body.liquid-glass .taskbar-btn:hover,
+body.liquid-glass .taskbar-app:hover,
+body.liquid-glass .taskbar-start:hover,
+body.liquid-glass .taskbar-control:hover,
+body.liquid-glass .taskbar-notification:hover {
+    background: rgba(255, 255, 255, 0.2) !important;
+    backdrop-filter: blur(10px) saturate(150%) !important;
+    -webkit-backdrop-filter: blur(10px) saturate(150%) !important;
+}
+
+body.liquid-glass .start-app:hover,
+body.liquid-glass .start-all-apps-item:hover {
+    background: rgba(255, 255, 255, 0.2) !important;
+    backdrop-filter: blur(10px) saturate(150%) !important;
+    -webkit-backdrop-filter: blur(10px) saturate(150%) !important;
+}
+
+body.liquid-glass.dark-theme .taskbar,
+body.liquid-glass.dark-theme .start-menu,
+body.liquid-glass.dark-theme .control-center,
+body.liquid-glass.dark-theme .notification-center,
+body.liquid-glass.dark-theme .context-menu,
+body.liquid-glass.dark-theme .power-menu,
+body.liquid-glass.dark-theme .fluent-toast {
+    background: rgba(40, 40, 40, 0.55) !important;
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
+    box-shadow:
+        inset 0 1px 1px rgba(255, 255, 255, 0.15),
+        inset 0 -1px 1px rgba(0, 0, 0, 0.2),
+        0 8px 32px rgba(0, 0, 0, 0.4) !important;
+}
+
+body.liquid-glass.dark-theme .window {
+    background: rgba(40, 40, 40, 0.6) !important;
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
+    box-shadow:
+        inset 0 1px 1px rgba(255, 255, 255, 0.15),
+        0 8px 32px rgba(0, 0, 0, 0.4) !important;
+}
+
+body.liquid-glass.dark-theme .control-tile {
+    background: rgba(255, 255, 255, 0.08) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+body.liquid-glass.dark-theme .notification-tile {
+    background: rgba(255, 255, 255, 0.06) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+body.liquid-glass.dark-theme .start-search {
+    background: rgba(255, 255, 255, 0.1) !important;
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
+}
+
+body.liquid-glass.dark-theme .fw-card {
+    background: rgba(255, 255, 255, 0.08) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+body.liquid-glass.dark-theme .taskbar-btn:hover,
+body.liquid-glass.dark-theme .taskbar-app:hover,
+body.liquid-glass.dark-theme .taskbar-start:hover,
+body.liquid-glass.dark-theme .taskbar-control:hover,
+body.liquid-glass.dark-theme .taskbar-notification:hover,
+body.liquid-glass.dark-theme .start-app:hover,
+body.liquid-glass.dark-theme .start-all-apps-item:hover {
+    background: rgba(255, 255, 255, 0.1) !important;
+}
+
+body.liquid-glass.blur-disabled .taskbar,
+body.liquid-glass.blur-disabled .start-menu,
+body.liquid-glass.blur-disabled .control-center,
+body.liquid-glass.blur-disabled .notification-center,
+body.liquid-glass.blur-disabled .window,
+body.liquid-glass.blur-disabled .context-menu,
+body.liquid-glass.blur-disabled .power-menu {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    background: rgba(255, 255, 255, 0.92) !important;
+}
+
+body.liquid-glass.blur-disabled.dark-theme .taskbar,
+body.liquid-glass.blur-disabled.dark-theme .start-menu,
+body.liquid-glass.blur-disabled.dark-theme .control-center,
+body.liquid-glass.blur-disabled.dark-theme .notification-center,
+body.liquid-glass.blur-disabled.dark-theme .window,
+body.liquid-glass.blur-disabled.dark-theme .context-menu,
+body.liquid-glass.blur-disabled.dark-theme .power-menu {
+    background: rgba(32, 32, 32, 0.92) !important;
+}

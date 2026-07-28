@@ -1,0 +1,909 @@
+﻿/**
+ * Surf AI Assistant - Complete UI Stylesheet
+ * ============================================
+ * Structure:
+ *   1. Rainbow blur layer (colorful background glow)
+ *   2. Panel positioning & open/close animations
+ *   3. Glass card (independent acrylic implementation)
+ *   4. Header toolbar
+ *   5. History sidebar
+ *   6. Scrollbar styling
+ *   7. Messages area
+ *   8. Input area with rainbow glow border
+ *   9. Empty state (floating search bar mode)
+ *  10. Taskbar button toggle
+ *  11. Keyframe animations
+ */
+
+/* ==========================================================
+   1. Rainbow Blur Layer - Floating color band above taskbar
+   ========================================================== */
+/* Surf 彩虹模糊层，在窗口上方但在任务栏下方 - Rainbow blur layer, above windows but below taskbar */
+#Surf-blur-layer {
+    position: fixed;
+    bottom: 48px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 600px;
+    height: 60px;
+    z-index: 9500;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    overflow: visible;
+}
+
+#Surf-blur-layer.Surf-visible {
+    opacity: 1;
+}
+
+.blur-disabled #Surf-blur-layer {
+    display: none;
+}
+
+#Surf-blur-layer::before {
+    content: '';
+    position: absolute;
+    inset: -30px -40px;
+    background: linear-gradient(90deg,
+        transparent 0%,
+        rgba(255, 50, 80, 0.45) 10%,
+        rgba(255, 160, 30, 0.5) 25%,
+        rgba(255, 240, 50, 0.4) 35%,
+        rgba(50, 220, 100, 0.45) 48%,
+        rgba(30, 140, 255, 0.5) 62%,
+        rgba(130, 60, 255, 0.5) 78%,
+        rgba(240, 50, 180, 0.4) 90%,
+        transparent 100%
+    );
+    filter: blur(35px);
+    animation: SurfFlow1 12s ease-in-out infinite alternate;
+}
+
+#Surf-blur-layer::after {
+    content: '';
+    position: absolute;
+    inset: -20px -30px;
+    background: linear-gradient(90deg,
+        transparent 5%,
+        rgba(130, 60, 255, 0.3) 20%,
+        rgba(30, 170, 255, 0.35) 40%,
+        rgba(50, 220, 80, 0.3) 55%,
+        rgba(255, 200, 50, 0.3) 70%,
+        rgba(255, 80, 60, 0.35) 85%,
+        transparent 95%
+    );
+    filter: blur(28px);
+    animation: SurfFlow2 15s ease-in-out infinite alternate-reverse;
+}
+
+/* ==========================================================
+   2. Panel Positioning & Open/Close Animations
+   --------------------------------------------------
+   CRITICAL: #Surf-panel must NOT use `transform` for centering.
+   Any non-none `transform` on a parent element breaks
+   `backdrop-filter` on children — the blur can only see the
+   parent's own (transparent) background instead of the real
+   content behind it.  Use left:0;right:0;margin:auto instead.
+   ========================================================== */
+/* Surf 面板，在任务栏上方 - Surf panel, above taskbar */
+#Surf-panel {
+    position: fixed;
+    bottom: 73px;
+    left: 0;
+    right: 0;
+    width: 400px;
+    max-height: 520px;
+    margin: 0 auto;
+    z-index: 10200;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    border: none;
+    background: transparent;
+    overflow: visible;
+}
+
+/*
+ * IMPORTANT: animation is on #Surf-panel (the transparent wrapper),
+ * NOT on .Surf-content. Applying `transform` via animation on the
+ * element that has `backdrop-filter` breaks the blur — even
+ * `transform: translateY(0) scale(1)` creates a new compositing
+ * context that prevents backdrop-filter from seeing through.
+ *
+ * We use fill-mode `none` (not `both`/`forwards`) so that after
+ * the animation finishes, the computed `transform` reverts to `none`.
+ * If it stayed as `translateY(0) scale(1)` via forwards-fill, the
+ * child's backdrop-filter would remain broken permanently.
+ */
+body.animations-enabled #Surf-panel:not(.hidden) {
+    animation: SurfOpen 0.35s cubic-bezier(0.22, 0.61, 0.36, 1);
+    animation-fill-mode: none;
+}
+
+body.animations-enabled #Surf-panel.Surf-closing {
+    animation: SurfClose 0.22s cubic-bezier(0.55, 0, 1, 0.45) forwards;
+}
+
+/* ==========================================================
+   3. Glass Card - Acrylic / Gaussian Blur
+   --------------------------------------------------
+   Mirrors the notification-center approach exactly:
+     background: var(--bg-secondary)   => rgba(255,255,255,0.7)
+     backdrop-filter: blur(--blur-lg)  => blur(16px) saturate(150%)
+   The parent #Surf-panel has NO transform, so
+   backdrop-filter can see through to the real wallpaper.
+   ========================================================== */
+.Surf-content {
+    --Surf-glass-radius: 16px;
+
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    max-height: 520px;
+    padding: 0;
+
+    /* Identical to notification-center: */
+    background: var(--bg-secondary);
+    backdrop-filter: blur(var(--blur-lg)) saturate(150%);
+    -webkit-backdrop-filter: blur(var(--blur-lg)) saturate(150%);
+
+    border-radius: var(--Surf-glass-radius);
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow-xl);
+    opacity: 1;
+    transform-origin: bottom center;
+    transition:
+        background 0.44s cubic-bezier(0.22, 1, 0.36, 1),
+        border-color 0.44s cubic-bezier(0.22, 1, 0.36, 1),
+        box-shadow 0.44s cubic-bezier(0.22, 1, 0.36, 1),
+        padding 0.44s cubic-bezier(0.22, 1, 0.36, 1),
+        backdrop-filter 0.44s cubic-bezier(0.22, 1, 0.36, 1),
+        opacity 0.32s cubic-bezier(0.22, 1, 0.36, 1);
+    overflow: hidden;
+}
+
+.Surf-content.Surf-expanding {
+    animation: SurfCardExpand 0.52s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.Surf-content.Surf-collapsing {
+    animation: SurfCardCollapse 0.36s cubic-bezier(0.55, 0, 0.8, 0.2);
+}
+
+.blur-disabled .Surf-content {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    background: rgba(255, 255, 255, 0.95);
+}
+
+.dark-mode.blur-disabled .Surf-content {
+    background: rgba(32, 32, 32, 0.92);
+}
+
+/* Subtle inner highlight along the top edge */
+.Surf-content::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 8px;
+    right: 8px;
+    height: 1px;
+    background: linear-gradient(90deg,
+        transparent,
+        rgba(255, 255, 255, 0.5) 30%,
+        rgba(255, 255, 255, 0.7) 50%,
+        rgba(255, 255, 255, 0.5) 70%,
+        transparent
+    );
+    z-index: 2;
+    pointer-events: none;
+    border-radius: var(--Surf-glass-radius) var(--Surf-glass-radius) 0 0;
+}
+
+.dark-mode .Surf-content::before {
+    background: linear-gradient(90deg,
+        transparent,
+        rgba(255, 255, 255, 0.08) 30%,
+        rgba(255, 255, 255, 0.12) 50%,
+        rgba(255, 255, 255, 0.08) 70%,
+        transparent
+    );
+}
+
+/* ==========================================================
+   4. Empty State - Collapse card, show only floating input
+   ========================================================== */
+.Surf-content.Surf-empty {
+    background: transparent;
+    border-color: transparent;
+    box-shadow: none;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    overflow: visible;
+}
+
+.Surf-content.Surf-empty::before {
+    display: none;
+}
+
+.Surf-content.Surf-empty .Surf-header,
+.Surf-content.Surf-empty .Surf-history,
+.Surf-content.Surf-empty #Surf-messages,
+.Surf-content.Surf-empty #oobe-Surf-messages {
+    opacity: 0;
+    max-height: 0;
+    overflow: hidden;
+    padding-top: 0;
+    padding-bottom: 0;
+    margin: 0;
+    pointer-events: none;
+    transform: translateY(-10px);
+    transition:
+        opacity 0.26s cubic-bezier(0.4, 0, 1, 1),
+        max-height 0.42s cubic-bezier(0.55, 0, 0.8, 0.2),
+        padding 0.34s cubic-bezier(0.55, 0, 0.8, 0.2),
+        margin 0.34s cubic-bezier(0.55, 0, 0.8, 0.2),
+        transform 0.34s cubic-bezier(0.55, 0, 0.8, 0.2);
+}
+
+.Surf-content:not(.Surf-empty) .Surf-header,
+.Surf-content:not(.Surf-empty) #Surf-messages,
+.Surf-content:not(.Surf-empty) #oobe-Surf-messages {
+    opacity: 1;
+    transform: translateY(0);
+    transition:
+        opacity 0.44s cubic-bezier(0.22, 1, 0.36, 1) 0.04s,
+        max-height 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+        padding 0.42s cubic-bezier(0.22, 1, 0.36, 1),
+        margin 0.42s cubic-bezier(0.22, 1, 0.36, 1),
+        transform 0.5s cubic-bezier(0.2, 0.9, 0.25, 1.08);
+}
+
+/* Floating bob animation when empty */
+.Surf-content.Surf-empty .Surf-input-wrap {
+    animation: SurfBob 3.5s ease-in-out infinite;
+}
+
+/* ==========================================================
+   5. Header Toolbar
+   ========================================================== */
+.Surf-header {
+    padding: 12px 18px 6px;
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    max-height: 64px;
+    overflow: hidden;
+}
+
+.Surf-header-left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex: 1;
+    min-width: 0;
+}
+
+.Surf-header-left img {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+}
+
+.Surf-header-left span {
+    font-size: 13px;
+    font-weight: 600;
+    color: #1a1a1a;
+}
+
+.dark-mode .Surf-header-left span {
+    color: #e8e8e8;
+}
+
+.Surf-toolbar {
+    display: flex;
+    gap: 2px;
+    flex-shrink: 0;
+}
+
+.Surf-toolbar button {
+    width: 28px;
+    height: 28px;
+    border: none;
+    background: transparent;
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0.5;
+    transition: opacity 0.2s ease, background 0.2s ease;
+    padding: 0;
+}
+
+.Surf-toolbar button:hover {
+    opacity: 1;
+    background: rgba(0, 0, 0, 0.06);
+}
+
+.dark-mode .Surf-toolbar button:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.Surf-toolbar button:active {
+    opacity: 0.8;
+    transform: scale(0.92);
+}
+
+.Surf-toolbar button img {
+    width: 15px;
+    height: 15px;
+}
+
+/* ==========================================================
+   6. History Sidebar
+   ========================================================== */
+.Surf-history {
+    display: block;
+    max-height: 0;
+    opacity: 0;
+    overflow-y: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    padding: 0 18px;
+    border-bottom: 1px solid transparent;
+    pointer-events: none;
+    transform: translateY(-8px);
+    transform-origin: top center;
+    transition:
+        max-height 0.48s cubic-bezier(0.22, 1, 0.36, 1),
+        opacity 0.3s cubic-bezier(0.33, 1, 0.68, 1),
+        padding 0.44s cubic-bezier(0.22, 1, 0.36, 1),
+        transform 0.48s cubic-bezier(0.2, 0.9, 0.25, 1.08),
+        border-color 0.24s ease;
+}
+
+.Surf-history::-webkit-scrollbar {
+    display: none;
+}
+
+.Surf-history.show {
+    max-height: 200px;
+    opacity: 1;
+    padding: 4px 18px 8px;
+    pointer-events: auto;
+    transform: translateY(0);
+    border-bottom-color: rgba(0, 0, 0, 0.06);
+}
+
+.dark-mode .Surf-history.show {
+    border-bottom-color: rgba(255, 255, 255, 0.08);
+}
+
+.Surf-history-item {
+    padding: 7px 10px;
+    border-radius: 8px;
+    font-size: 12px;
+    color: #555;
+    cursor: pointer;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: background 0.15s ease;
+}
+
+.Surf-history-item:hover {
+    background: rgba(0, 0, 0, 0.05);
+}
+
+.dark-mode .Surf-history-item {
+    color: #bbb;
+}
+
+.dark-mode .Surf-history-item:hover {
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.Surf-history-empty {
+    font-size: 12px;
+    color: #999;
+    padding: 10px;
+    text-align: center;
+}
+
+/* ==========================================================
+   7. Scrollbar Styling (messages & history)
+   ========================================================== */
+#Surf-messages,
+#oobe-Surf-messages,
+.Surf-history {
+    scrollbar-width: thin;
+    scrollbar-color: transparent transparent;
+}
+
+#Surf-messages:hover,
+#oobe-Surf-messages:hover,
+.Surf-history:hover {
+    scrollbar-color: rgba(0, 0, 0, 0.15) transparent;
+}
+
+.dark-mode #Surf-messages:hover,
+.dark-mode #oobe-Surf-messages:hover,
+.dark-mode .Surf-history:hover {
+    scrollbar-color: rgba(255, 255, 255, 0.18) transparent;
+}
+
+#Surf-messages::-webkit-scrollbar,
+#oobe-Surf-messages::-webkit-scrollbar,
+.Surf-history::-webkit-scrollbar {
+    width: 4px;
+}
+
+#Surf-messages::-webkit-scrollbar-track,
+#oobe-Surf-messages::-webkit-scrollbar-track,
+.Surf-history::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+#Surf-messages::-webkit-scrollbar-thumb,
+#oobe-Surf-messages::-webkit-scrollbar-thumb,
+.Surf-history::-webkit-scrollbar-thumb {
+    background: transparent;
+    border-radius: 4px;
+    transition: background 0.2s ease;
+}
+
+#Surf-messages:hover::-webkit-scrollbar-thumb,
+#oobe-Surf-messages:hover::-webkit-scrollbar-thumb,
+.Surf-history:hover::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.15);
+}
+
+.dark-mode #Surf-messages:hover::-webkit-scrollbar-thumb,
+.dark-mode #oobe-Surf-messages:hover::-webkit-scrollbar-thumb,
+.dark-mode .Surf-history:hover::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.18);
+}
+
+/* ==========================================================
+   8. Messages Area
+   ========================================================== */
+#Surf-messages,
+#oobe-Surf-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 8px 18px 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    max-height: 300px;
+    min-height: 40px;
+}
+
+.Surf-msg {
+    padding: 9px 14px;
+    border-radius: 14px;
+    font-size: 13px;
+    line-height: 1.55;
+    max-width: 85%;
+    word-wrap: break-word;
+    animation: SurfMsgIn 0.28s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.Surf-msg-user {
+    align-self: flex-end;
+    background: var(--accent-color, #0078d4);
+    color: #fff;
+    border-bottom-right-radius: 4px;
+}
+
+.Surf-msg-bot {
+    align-self: flex-start;
+    background: rgba(0, 0, 0, 0.055);
+    color: #1a1a1a;
+    border-bottom-left-radius: 4px;
+}
+
+.dark-mode .Surf-msg-bot {
+    background: rgba(255, 255, 255, 0.09);
+    color: #e4e4e4;
+}
+
+.Surf-msg-text {
+    word-break: break-word;
+}
+
+.Surf-msg-copyable {
+    position: relative;
+    padding-right: 40px;
+}
+
+.Surf-copy-btn {
+    position: absolute;
+    right: 8px;
+    bottom: 6px;
+    width: 22px;
+    height: 22px;
+    border: none;
+    border-radius: 6px;
+    background: transparent;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    opacity: 0;
+    transform: scale(0.92);
+    transition: opacity 0.16s ease, transform 0.16s ease, background 0.16s ease;
+}
+
+.Surf-copy-btn img {
+    width: 14px;
+    height: 14px;
+    display: block;
+    pointer-events: none;
+}
+
+.Surf-msg-copyable:hover .Surf-copy-btn,
+.Surf-copy-btn:focus-visible,
+.Surf-copy-btn.copied,
+.Surf-copy-btn.copy-failed {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.Surf-copy-btn:hover {
+    background: rgba(0, 0, 0, 0.08);
+}
+
+.dark-mode .Surf-copy-btn:hover {
+    background: rgba(255, 255, 255, 0.14);
+}
+
+.Surf-copy-btn:focus-visible {
+    outline: 1px solid rgba(0, 120, 212, 0.55);
+    outline-offset: 1px;
+}
+
+.Surf-copy-btn.copied {
+    animation: SurfCopyTap 0.22s ease;
+}
+
+.Surf-copy-btn.copy-failed {
+    animation: SurfCopyShake 0.22s ease;
+}
+
+/* ==========================================================
+   9. Input Area with Rainbow Glow Border
+   ========================================================== */
+.Surf-input-wrap {
+    padding: 10px 14px 14px;
+    position: relative;
+    flex-shrink: 0;
+}
+
+.Surf-input-glow {
+    position: relative;
+    border-radius: 14px;
+    padding: 2px;
+    /* Animated rainbow gradient border */
+    background: linear-gradient(90deg,
+        rgba(255, 50, 80, 0.35),
+        rgba(255, 160, 30, 0.35),
+        rgba(255, 240, 50, 0.25),
+        rgba(50, 220, 100, 0.25),
+        rgba(30, 140, 255, 0.35),
+        rgba(130, 60, 255, 0.3),
+        rgba(240, 50, 180, 0.25),
+        rgba(255, 50, 80, 0.35)
+    );
+    background-size: 200% 100%;
+    animation: SurfGlowSlide 8s linear infinite;
+    transition: box-shadow 0.3s ease;
+}
+
+.Surf-input-glow:focus-within {
+    box-shadow:
+        0 0 16px rgba(130, 60, 255, 0.25),
+        0 0 36px rgba(30, 170, 255, 0.12);
+}
+
+#Surf-input,
+#oobe-Surf-input {
+    width: 100%;
+    padding: 10px 16px;
+    border: none;
+    border-radius: 12px;
+    background: rgba(0, 0, 0, 0.04);
+    font-size: 14px;
+    color: #1a1a1a;
+    outline: none;
+    box-sizing: border-box;
+    transition: background 0.2s ease;
+}
+
+#Surf-input::placeholder,
+#oobe-Surf-input::placeholder {
+    color: #999;
+}
+
+.dark-mode #Surf-input,
+.dark-mode #oobe-Surf-input {
+    background: rgba(255, 255, 255, 0.08);
+    color: #e4e4e4;
+}
+
+.dark-mode #Surf-input::placeholder,
+.dark-mode #oobe-Surf-input::placeholder {
+    color: #777;
+}
+
+/* ==========================================================
+   10. Empty State - Floating Acrylic Search Bar
+   --------------------------------------------------
+   Same approach: use system CSS vars for glass effect.
+   ========================================================== */
+.Surf-content.Surf-empty .Surf-input-glow {
+    /* Override: standalone acrylic glass card — same as notification-center */
+    background: var(--bg-secondary);
+    backdrop-filter: blur(var(--blur-lg)) saturate(150%);
+    -webkit-backdrop-filter: blur(var(--blur-lg)) saturate(150%);
+    box-shadow: var(--shadow-xl);
+    border: 1px solid var(--border-color);
+    border-radius: var(--Surf-glass-radius, 16px);
+    padding: 0;
+    animation: none; /* disable gradient slide */
+}
+
+/* Rainbow glow ring behind the floating input */
+.Surf-content.Surf-empty .Surf-input-glow::before {
+    content: '';
+    position: absolute;
+    inset: -3px;
+    border-radius: calc(var(--Surf-glass-radius, 16px) + 3px);
+    background: linear-gradient(90deg,
+        rgba(255, 50, 80, 0.35),
+        rgba(255, 160, 30, 0.35),
+        rgba(255, 240, 50, 0.25),
+        rgba(50, 220, 100, 0.25),
+        rgba(30, 140, 255, 0.35),
+        rgba(130, 60, 255, 0.3),
+        rgba(240, 50, 180, 0.25),
+        rgba(255, 50, 80, 0.35)
+    );
+    background-size: 200% 100%;
+    animation: SurfGlowSlide 8s linear infinite;
+    z-index: -1;
+    pointer-events: none;
+}
+
+.Surf-content.Surf-empty #Surf-input,
+.Surf-content.Surf-empty #oobe-Surf-input {
+    background: transparent !important;
+    border-radius: calc(var(--Surf-glass-radius, 16px) - 1px);
+}
+
+.blur-disabled .Surf-content.Surf-empty .Surf-input-glow {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    background: rgba(255, 255, 255, 0.95);
+}
+
+.dark-mode.blur-disabled .Surf-content.Surf-empty .Surf-input-glow {
+    background: rgba(32, 32, 32, 0.92);
+}
+
+/* ==========================================================
+   11. Taskbar Button Icon Toggle
+   ========================================================== */
+#Surf-btn .icon-stroke,
+#Surf-btn.active .icon-fill {
+    display: inline;
+}
+
+#Surf-btn .icon-fill,
+#Surf-btn.active .icon-stroke {
+    display: none;
+}
+
+/* ==========================================================
+   12. Keyframe Animations
+   ========================================================== */
+
+/* Rainbow blur layer flow */
+@keyframes SurfFlow1 {
+    0%   { transform: translateX(-25px); filter: blur(35px) hue-rotate(0deg); }
+    33%  { transform: translateX(15px);  filter: blur(38px) hue-rotate(40deg); }
+    66%  { transform: translateX(-10px); filter: blur(32px) hue-rotate(-30deg); }
+    100% { transform: translateX(25px);  filter: blur(36px) hue-rotate(60deg); }
+}
+
+@keyframes SurfFlow2 {
+    0%   { transform: translateX(20px);  filter: blur(28px) hue-rotate(0deg); }
+    50%  { transform: translateX(-20px); filter: blur(30px) hue-rotate(-50deg); }
+    100% { transform: translateX(15px);  filter: blur(26px) hue-rotate(45deg); }
+}
+
+/* Panel open/close — no translateX(-50%) needed since we use margin:auto */
+@keyframes SurfOpen {
+    from {
+        opacity: 0;
+        transform: translateY(18px) scale(0.96);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@keyframes SurfClose {
+    from {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+    to {
+        opacity: 0;
+        transform: translateY(18px) scale(0.96);
+    }
+}
+
+/* Rainbow border slide */
+@keyframes SurfGlowSlide {
+    0%   { background-position: 0% 50%; }
+    100% { background-position: 200% 50%; }
+}
+
+/* Card unfold/fold for first-message and reset transitions */
+@keyframes SurfCardExpand {
+    0% {
+        opacity: 0.82;
+        box-shadow: 0 10px 22px rgba(0, 0, 0, 0.12);
+    }
+    65% {
+        opacity: 1;
+        box-shadow: 0 20px 44px rgba(0, 0, 0, 0.2);
+    }
+    100% {
+        opacity: 1;
+        box-shadow: var(--shadow-xl);
+    }
+}
+
+@keyframes SurfCardCollapse {
+    0% {
+        opacity: 1;
+        box-shadow: var(--shadow-xl);
+    }
+    100% {
+        opacity: 0.88;
+        box-shadow: 0 10px 22px rgba(0, 0, 0, 0.12);
+    }
+}
+
+/* Message entrance */
+@keyframes SurfMsgIn {
+    from {
+        opacity: 0;
+        transform: translateY(6px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes SurfCopyTap {
+    0% {
+        transform: scale(0.86);
+    }
+    70% {
+        transform: scale(1.08);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+@keyframes SurfCopyShake {
+    0% {
+        transform: translateX(0);
+    }
+    30% {
+        transform: translateX(-2px);
+    }
+    70% {
+        transform: translateX(2px);
+    }
+    100% {
+        transform: translateX(0);
+    }
+}
+
+/* Floating bob for empty state */
+@keyframes SurfBob {
+    0%, 100% { transform: translateY(0); }
+    50%      { transform: translateY(-6px); }
+}
+
+/* SurfAI 跑马灯思考动画 */
+.Surf-msg-thinking {
+    position: relative;
+    overflow: hidden;
+    min-height: 36px;
+    display: flex;
+    align-items: center;
+}
+
+.Surf-thinking-marquee {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow: hidden;
+    border-radius: 14px;
+    pointer-events: none;
+}
+
+.Surf-thinking-marquee::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        transparent 0%,
+        rgba(124, 58, 237, 0.3) 20%,
+        rgba(59, 130, 246, 0.4) 50%,
+        rgba(16, 185, 129, 0.3) 80%,
+        transparent 100%
+    );
+    animation: surfaiMarquee 1.5s linear infinite;
+}
+
+@keyframes surfaiMarquee {
+    0% {
+        left: -100%;
+    }
+    100% {
+        left: 100%;
+    }
+}
+
+.Surf-thinking-dots {
+    display: inline-flex;
+    gap: 4px;
+    margin-left: 8px;
+}
+
+.Surf-thinking-dots span {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: currentColor;
+    opacity: 0.4;
+    animation: surfaiDotBounce 1.4s ease-in-out infinite;
+}
+
+.Surf-thinking-dots span:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.Surf-thinking-dots span:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+@keyframes surfaiDotBounce {
+    0%, 80%, 100% {
+        transform: scale(0.8);
+        opacity: 0.4;
+    }
+    40% {
+        transform: scale(1.2);
+        opacity: 1;
+    }
+}
