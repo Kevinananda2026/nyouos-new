@@ -1,4 +1,7 @@
 # NyouOS
+
+[简体中文](x)
+
 Self-developed web desktop system built with HTML, CSS and JavaScript, maintained as private closed-source project.
 
 ## System Features
