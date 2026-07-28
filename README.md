@@ -1,5 +1,8 @@
 
 # NyouOS
+
+简体中文 | [English](https://gitee.com/black-kevin/nyouos/blob/master/README.en.md)
+
 自制网页桌面系统，使用HTML、CSS、JavaScript搭建，私有闭源维护。
 
 ## 系统功能
