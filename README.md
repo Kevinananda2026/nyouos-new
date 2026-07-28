@@ -1,37 +1,26 @@
+
 # NyouOS
+自制网页桌面系统，使用HTML、CSS、JavaScript搭建，私有闭源维护。
 
-#### 介绍
-网页端自制系统 NyouOS，包含登录注册 API、Open-Meteo 天气、App Shop、内置浏览器，闭源私有维护。
+## 系统功能
+1. 登录注册接口
+账号包含KevinAnanda ROOT账号禁止二次注册；账号权限隔离，普通账号无数据库读写权限。
+2. 天气服务
+对接Open-Meteo免费天气API，状态栏展示全球天气，无调用费用。
+3. App Shop应用商店
+所有拓展工具统一收纳管理，无需额外对接第三方壁纸、资源接口。
+4. 内置浏览器
+自带UA设备识别，搭载自研彩蛋逻辑，不依赖外部检测API。
+5. 多语言支持
+适配中文、英语、泰语、德语。
 
-#### 软件架构
-软件架构说明
+## 当前版本
+v26.4
 
+## 安全说明
+1. 仓库全程私有，源码不外流；
+2. 私密密钥、私有配置文件通过.gitignore屏蔽，不会上传云端；
+3. 仅公开天气接口，无敏感密钥写在前端页面。
 
-#### 安装教程
-
-1.  xxxx
-2.  xxxx
-3.  xxxx
-
-#### 使用说明
-
-1.  xxxx
-2.  xxxx
-3.  xxxx
-
-#### 参与贡献
-
-1.  Fork 本仓库
-2.  新建 Feat_xxx 分支
-3.  提交代码
-4.  新建 Pull Request
-
-
-#### 特技
-
-1.  使用 Readme\_XXX.md 来支持不同的语言，例如 Readme\_en.md, Readme\_zh.md
-2.  Gitee 官方博客 [blog.gitee.com](https://blog.gitee.com)
-3.  你可以 [https://gitee.com/explore](https://gitee.com/explore) 这个地址来了解 Gitee 上的优秀开源项目
-4.  [GVP](https://gitee.com/gvp) 全称是 Gitee 最有价值开源项目，是综合评定出的优秀开源项目
-5.  Gitee 官方提供的使用手册 [https://gitee.com/help](https://gitee.com/help)
-6.  Gitee 封面人物是一档用来展示 Gitee 会员风采的栏目 [https://gitee.com/gitee-stars/](https://gitee.com/gitee-stars/)
+## 交付方式
+仅系统开发者可管理源码；对外分发成品网站，不提供源代码。
