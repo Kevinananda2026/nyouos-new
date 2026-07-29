@@ -41,10 +41,7 @@ Only the developer has permission to manage source code. Only compiled finished 
 6. Open-Meteo weather API and Supabase follow their own official user agreements. NyouOS is not responsible for malfunctions and access limits of third-party platforms.
 
 ## Account Introduction
-1. KevinAnanda: ROOT super administrator account, repeated registration permanently disabled, owns full backend management and configuration modification permissions.
-George Wong: administrator account, responsible for daily auxiliary inspection.
-Owner: common test account, only with basic browsing permission, unable to read or write database.
-2. All regular user accounts without ROOT permission can only use basic system functions, with no access to backend operations and data export.
+1. All regular user accounts without ROOT permission can only use basic system functions, with no access to backend operations and data export.
 
 ## Supplementary Notes
 1. This project is stored in private Gitee repository. Only the developer can push updates; no other collaboration accounts exist. Contact the developer offline to obtain new installation packages.
