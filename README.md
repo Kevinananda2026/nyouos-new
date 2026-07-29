@@ -1,4 +1,4 @@
-#NyouOS On Web
+## NyouOS On Web
 
 简体中文 | [English](README-EN.md)
 
