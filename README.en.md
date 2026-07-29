@@ -17,7 +17,7 @@ Supports UA device recognition and self-designed easter egg logic, with no relia
 Compatible with Chinese, English, Thai and German.
 
 ## Current Version
-v26.4
+v26.6
 
 ## Security Statement
 1. The entire repository is private, and source code will never be disclosed.
