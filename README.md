@@ -1,3 +1,7 @@
+#NyouOS On Web
+
+简体中文 | [English](README-EN.md)
+
 # NyouOS 许可协议
 
 > **版权所有 © 2025-2026 KevinAnanda. 保留所有权利。**
